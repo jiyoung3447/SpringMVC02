@@ -49,7 +49,12 @@ public class BoardController {
 	 public String view(Model model, int idx) {
 		 
 		 BoardVO vo = board_dao.selectOne(idx);  //해당되는idx 의 모든 정보를 vo로 담는다.
+		 
 		 model.addAttribute("vo", vo);
+		 
+		//조회수 증가를 위한 업데이트 메서드
+		 board_dao.update_indate(idx);
+		 
 		 return "WEB-INF/views/boardView.jsp";
 	 }
 	 
@@ -62,4 +67,23 @@ public class BoardController {
 		 return "redirect:myboardList.do";
 	 }
 	 
+	 //수정하기로 가기위한 매핑. 수정 전 vo
+	 @RequestMapping("/boardModifyForm.do")
+	 public String modify_form(Model model, int idx) {
+		 
+		 BoardVO vo = board_dao.selectOne(idx);
+		 model.addAttribute("vo", vo);
+		 
+		 return "WEB-INF/views/boardModify.jsp";
+	 }
+	 
+	 //수정 업데이트 완료.  수정 후 vo임
+	 @RequestMapping("/boardModify.do")
+	 public String modifyOK(BoardVO vo){
+		 
+		 int res = board_dao.update(vo);
+		 
+		 return "redirect:myboardList.do";	 
+	 }
+	
 }

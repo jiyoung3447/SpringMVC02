@@ -50,5 +50,15 @@ public class BoardDAO {
 		 return res;
 	 }
 	
-	
+	//게시글 수정
+	 public int update(BoardVO vo) {
+		 int res = sqlSession.update("b.board_update", vo);
+		 return res;
+	 }
+	 
+	 //상세보기 들어갔을 때 조회수 증가
+	 public int update_indate(int idx) {
+		 int res = sqlSession.update("b.update_indate", idx);
+		 return res;
+	 }
 }

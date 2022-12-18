@@ -32,5 +32,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from myboard where idx = #{idx}
 	</delete>
 
+	<!-- 게시글 수정 -->
+	<update id="board_update" parameterType="board">
+		update myboard set title = #{title}, content = #{content}, indate = sysdate
+		 where idx = #{idx}
+	</update>
+	
+	<!-- 조회수 증가 -->
+	<update id="update_indate" parameterType="int">
+		 update myboard set count = count+1 where idx=#{idx} 
+		
+	</update>
+	
 
 </mapper>
