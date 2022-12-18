@@ -30,9 +30,9 @@
           <c:forEach var="vo" items="${list}">
            <tr>
             <td>${vo.idx}</td>
-            <td>${vo.title}</td>
+            <td><a href="view.do?idx=${vo.idx }">${vo.title}</a></td>
             <td>${vo.writer}</td>
-            <td>${vo.indate}</td>
+            <td>${fn:split(vo.indate, " ")[0]}</td> <!--  공백을 기준으로 0번째를 가져와라 -->
             <td>${vo.count}</td>
            </tr>
           </c:forEach>

@@ -7,8 +7,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getLists" resultType="board">
 		select * from myboard order by idx desc
 	</select>
-	
-<!--MYBOARD_SEQ  -->  
+
+	<!--MYBOARD_SEQ -->
 	<insert id="boardInsert" parameterType="board">
 		insert into myboard
 		values(
@@ -19,8 +19,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		sysdate,
 		0
 		)
-	</insert>  
+		<!-- insert into myboard (title, writer, count) values (#{title}, #{writer}, 
+			0) -->
+	</insert>
 
- 
+	<!-- 게시글 상세보기 -->
+	<select id="board_one" resultType="board">
+		select * from myboard where idx = #{idx}
+	</select>
+	 
+	<delete id="board_del" parameterType="int">
+		delete from myboard where idx = #{idx}
+	</delete>
+
 
 </mapper>
