@@ -20,14 +20,28 @@ public class BoardController {
 	public void setBoard_dao(BoardDAO board_dao) {
 		this.board_dao = board_dao;
 	}
-	 
-	@RequestMapping(value = { "/", "/myboardList.do" })
+	
+	@RequestMapping("/")
+	public String main() {
+		return "WEB-INF/views/main.jsp";
+	}
+	
+	@RequestMapping("/myboardList.do")
+	public List<BoardVO> boardList(){
+		
+		List<BoardVO> list = board_dao.selectList();
+		
+		return list; //객체를 리턴(객체를 응답함) JSON 데이터 형식으로 변환해서 리턴하겠다.
+	}
+	
+	/*@RequestMapping(value = { "/", "/myboardList.do" })
 	public String List(Model model) {
 		List<BoardVO> list = board_dao.selectList();
 		model.addAttribute("list", list);
 		return "WEB-INF/views/boardList.jsp"; // /WEB-INF/views/boardList.jsp -> forward
-	}	
+	}
 	
+	 
 	//글쓰기 버튼 눌렀을 때 글쓰기.jsp 로 이동시킴
 	@RequestMapping("/boardForm.do")
 	public String boardForm() {
@@ -84,6 +98,6 @@ public class BoardController {
 		 int res = board_dao.update(vo);
 		 
 		 return "redirect:myboardList.do";	 
-	 }
+	 } */
 	
 }
