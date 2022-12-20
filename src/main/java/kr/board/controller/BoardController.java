@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import dao.BoardDAO;
 import vo.BoardVO;
@@ -26,8 +27,9 @@ public class BoardController {
 		return "WEB-INF/views/main.jsp";
 	}
 	
+	//@ResponseBody ->jackson-databind(객체를->JSON데이터 포맷으로 변환)
 	@RequestMapping("/myboardList.do")
-	public List<BoardVO> boardList(){
+	public @ResponseBody List<BoardVO> boardList(){
 		
 		List<BoardVO> list = board_dao.selectList();
 		
