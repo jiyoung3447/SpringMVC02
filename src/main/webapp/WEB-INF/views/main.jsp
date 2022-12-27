@@ -47,9 +47,25 @@
 			listHtml += "</tr>";
 			
 		} );
+		listHtml += "<tr>";
+		listHtml += "<td colspan='5'>";
+		listHtml +="<button class='btn btn-primary btn-sm' onclick='goForm()'>글쓰기</button>"
+		listHtml += "</td>";
+		listHtml += "</tr>";
+		 
 		listHtml += "</table>";
 		$("#view").html(listHtml);
 	}
+	function goForm(){
+		$("#view").css("display","none"); //감추기
+		$("#write_view").css("display","block"); //보이기
+	}
+	function goList(){
+		$("#view").css("display","block"); //감추기
+		$("#write_view").css("display","none"); //보이기
+	}
+	
+	
 </script> 
 
       
@@ -62,6 +78,30 @@
   <div class="panel panel-default">
     <div class="panel-heading">BOARD</div>
     <div class="panel-body" id="view">Panel Content</div>
+    <div class="panel-body" id="write_view" style="display:none">
+    <form action="boardInsert.do" method="POST">
+					<table class="table">
+						<tr>
+							<th>제목</th>
+							<td><input name="title" class="form-control" /></td>
+						</tr>
+						<th>작성자</th>
+						<td><input type="text" name="writer" class="form-control" /></td>
+						</tr>
+						<tr>
+							<th>내용</th>
+							<td><textarea rows="7" name="content" class="form-control"></textarea></td>
+						</tr>
+						</tr>
+
+						<tr>
+							<td colspan="2" align="right">
+								<button type="submit" class="btn btn-info btn-sm">등록</button>
+								<button type="reset" class="btn btn-sm" onclick="goList()">취소</button>
+							</td>
+					</table>
+				</form>
+    </div>
     <div class="panel-footer">인프런_스프1단 푸터</div>
   </div>
 </div>
