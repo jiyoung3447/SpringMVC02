@@ -55,17 +55,40 @@
 		 
 		listHtml += "</table>";
 		$("#view").html(listHtml);
+		
+		//글 등록한 뒤 리스트는 보이게하고 글쓰기 화면은 숨기 위해
+		$("#view").css("display","block"); 
+		$("#write_view").css("display","none"); 
 	}
 	function goForm(){
-		$("#view").css("display","none"); //감추기
-		$("#write_view").css("display","block"); //보이기
+		$("#view").css("display","none"); 
+		$("#write_view").css("display","block"); 
 	}
 	function goList(){
-		$("#view").css("display","block"); //감추기
-		$("#write_view").css("display","none"); //보이기
+		$("#view").css("display","block"); 
+		$("#write_view").css("display","none"); 
+	} 
+	function goInsert(){
+		//var title = $("#title").val();
+		//var writer = $("#writer").val();
+		//var content = $("#content").val();
+		
+		var formData = $("#frm").serialize(); //폼 안에있는 모든 파라미터 직렬화시켜서 한꺼번에 가져옴
+		//alert(formData);
+ 
+		$.ajax({
+     		url : "boardInsert.do",
+     		type : "post",
+     		//dataType : "json",
+     		data : formData,
+     		success : loadList,
+     		error : function(){ alert("error");  }    		
+     	});
+		//폼 초기화. 글등록후 글쓰기 누르면 기존 내용이 살아있어서 초기화시켜줌
+		 $("#title").val("");
+		 $("#writer").val("");
+		 $("#content").val("");
 	}
-	
-	
 </script> 
 
       
@@ -79,24 +102,24 @@
     <div class="panel-heading">BOARD</div>
     <div class="panel-body" id="view">Panel Content</div>
     <div class="panel-body" id="write_view" style="display:none">
-    <form action="boardInsert.do" method="POST">
+    <form id=frm>
 					<table class="table">
 						<tr>
 							<th>제목</th>
-							<td><input name="title" class="form-control" /></td>
+							<td><input id="title" name="title" class="form-control" /></td>
 						</tr>
 						<th>작성자</th>
-						<td><input type="text" name="writer" class="form-control" /></td>
+						<td><input type="text" id="writer" name="writer" class="form-control" /></td>
 						</tr>
 						<tr>
 							<th>내용</th>
-							<td><textarea rows="7" name="content" class="form-control"></textarea></td>
+							<td><textarea rows="7" id="content" name="content" class="form-control"></textarea></td>
 						</tr>
 						</tr>
 
 						<tr>
 							<td colspan="2" align="right">
-								<button type="submit" class="btn btn-info btn-sm">등록</button>
+								<button type="button" class="btn btn-info btn-sm" onclick="goInsert()">등록</button>
 								<button type="reset" class="btn btn-sm" onclick="goList()">취소</button>
 							</td>
 					</table>

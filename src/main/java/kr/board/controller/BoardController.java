@@ -35,7 +35,18 @@ public class BoardController {
 		
 		return list; //객체를 리턴(객체를 응답함) JSON 데이터 형식으로 변환해서 리턴하겠다.
 	}
-	
+		 
+	//새글 등록
+	 @RequestMapping("/boardInsert.do")
+	 public @ResponseBody void boardInsert(BoardVO vo) { 
+		 /*여기에 @ResponseBody를 넣어주고 아래 return을 안써주면 제어권은 ajax의 success로 내려감
+		 특별하게 리턴할게 없으니 void로 바꿨음. */
+		 
+		 int res = board_dao.insert(vo);
+		 System.out.println("C_res : "+res);
+		 //return "redirect:myboardList.do";
+		 }
+		 
 	/*@RequestMapping(value = { "/", "/myboardList.do" })
 	public String List(Model model) {
 		List<BoardVO> list = board_dao.selectList();
@@ -50,15 +61,15 @@ public class BoardController {
 		return "WEB-INF/views/boarForm.jsp";
 	}
 	
-	//새글 등록
-	 @RequestMapping("/boardInsert.do")
-	 public String boardInsert(BoardVO vo) {
+		//새글 등록
+		 @RequestMapping("/boardInsert.do")
+		 public @ResponseBody String boardInsert(BoardVO vo) {
 
-		 int res = board_dao.insert(vo);
-			
-		 System.out.println("C_res : "+res);
-		 return "redirect:myboardList.do";
-	 }
+			 int res = board_dao.insert(vo);
+			 System.out.println("C_res : "+res);
+			 return "redirect:myboardList.do";
+		 } 
+	 
 	 
 	 //게시글 상세보기
 	 @GetMapping("/view.do")
