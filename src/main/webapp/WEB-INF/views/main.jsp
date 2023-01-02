@@ -40,10 +40,18 @@
 		$.each(data, function(index, obj){ //obj={"idx" : 5, "title" : "게시판", ~~}
 			listHtml += "<tr>";
 			listHtml += "<td>"+ obj.idx +"</td>";
-			listHtml += "<td>"+ obj.title +"</td>";
+			listHtml += "<td><a href='javascript:goContent("+ obj.idx +")'>"+ obj.title +"</a></td>";
 			listHtml += "<td>"+ obj.writer +"</td>";
 			listHtml += "<td>"+ obj.indate +"</td>";
 			listHtml += "<td>"+ obj.count +"</td>";
+			listHtml += "</tr>";
+			
+			//위에까진 전체리스트들. 아래는 각 리스트아래 공간만들어 주기
+			listHtml += "<tr id='c"+ obj.idx+"' style='display:none'>";
+			listHtml += "<td>내용</td>";
+			listHtml += "<td colspan='4'>";
+			listHtml += "<textarea rows='7' class='form-control'>"+ obj.content +"</textarea>";
+			listHtml += "</td>";
 			listHtml += "</tr>";
 			
 		} );
@@ -85,9 +93,16 @@
      		error : function(){ alert("error");  }    		
      	});
 		//폼 초기화. 글등록후 글쓰기 누르면 기존 내용이 살아있어서 초기화시켜줌
-		 $("#title").val("");
+		/* $("#title").val("");
 		 $("#writer").val("");
-		 $("#content").val("");
+		 $("#content").val(""); */
+		 $("#form_clear").trigger("click"); //트리거가 form_clear 버튼찾아가서 이벤트 발생시킴
+		 
+	}
+	function goContent(idx){
+		//$("#c"+idx).css("display", "block");  //block으로 해버리면 colsplan이 tr에걸려있기 때문에 안먹힘.
+		$("#c"+idx).css("display", "table-row");  
+		
 	}
 </script> 
 
@@ -120,6 +135,7 @@
 						<tr>
 							<td colspan="2" align="right">
 								<button type="button" class="btn btn-info btn-sm" onclick="goInsert()">등록</button>
+								<button type="reset" class="btn btn-warning btn-sm" id="form_clear">내용지우기</button>
 								<button type="reset" class="btn btn-sm" onclick="goList()">취소</button>
 							</td>
 					</table>
