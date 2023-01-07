@@ -40,7 +40,7 @@
 		$.each(data, function(index, obj){ //obj={"idx" : 5, "title" : "게시판", ~~}
 			listHtml += "<tr>";
 			listHtml += "<td>"+ obj.idx +"</td>";
-			listHtml += "<td><a href='javascript:goContent("+ obj.idx +")'>"+ obj.title +"</a></td>";
+			listHtml += "<td id='t"+ obj.idx +"'><a href='javascript:goContent("+ obj.idx +")'>"+ obj.title +"</a></td>";
 			listHtml += "<td>"+ obj.writer +"</td>";
 			listHtml += "<td>"+ obj.indate +"</td>";
 			listHtml += "<td>"+ obj.count +"</td>";
@@ -50,7 +50,11 @@
 			listHtml += "<tr id='c"+ obj.idx+"' style='display:none'>";
 			listHtml += "<td>내용</td>";
 			listHtml += "<td colspan='4'>";
-			listHtml += "<textarea rows='7' class='form-control'>"+ obj.content +"</textarea>";
+			listHtml += "<textarea id='t_a"+ obj.idx +"'readonly rows='7' class='form-control'>"+ obj.content +"</textarea>";
+			listHtml += "<br/>";
+			listHtml += "<span id='update_btn"+ obj.idx +"'><button class='btn btn-success btn-sm' onclick='goUpdateForm("+ obj.idx +")'>수정</button></span>&nbsp";
+			listHtml += "<button class='btn btn-warning btn-sm' onclick='goDelete("+ obj.idx +")'>삭제</button>";
+			
 			listHtml += "</td>";
 			listHtml += "</tr>";
 			
@@ -87,7 +91,6 @@
 		$.ajax({
      		url : "boardInsert.do",
      		type : "post",
-     		//dataType : "json",
      		data : formData,
      		success : loadList,
      		error : function(){ alert("error");  }    		
@@ -99,11 +102,56 @@
 		 $("#form_clear").trigger("click"); //트리거가 form_clear 버튼찾아가서 이벤트 발생시킴
 		 
 	}
+	//상세보기 화면임
 	function goContent(idx){
 		//$("#c"+idx).css("display", "block");  //block으로 해버리면 colsplan이 tr에걸려있기 때문에 안먹힘.
-		$("#c"+idx).css("display", "table-row");  
-		
+		if($("#c"+idx).css("display")=="none"){  //상세보기가 펼쳐질때 아래 ajax로 보여지기
+			
+			$("#c"+idx).css("display", "table-row"); //보이기
+			$("#t_a"+idx).attr("readonly",true); //수정하기 처음에만 readonly가 false여야 하므로 이부분 추가해주기
+			
+		}else{
+			$("#c"+idx).css("display", "none"); //감추기
+		}
 	}
+	
+	//상세보기에서 삭제버튼
+	function goDelete(idx){
+		$.ajax({
+			url : "boardDel.do",
+     		type : "get",
+     		data : {"idx" : idx},
+     		success : loadList,
+     		error : function(){ alert("삭제가 실패됐습니다.");  }  
+			
+		});	
+	}
+	
+	//상세보기에서 수정하기
+	 function goUpdateForm(idx){ //textarea를 수정해야 하니 textarea에 id 넣어주기
+		$("#t_a"+ idx).attr("readonly", false); //속성값을 가져오거나 설정(readonly는 스타일이 아니니까)
+		
+		var title = $("#t"+idx).text();  //원래 썼던 제목을 가져옴
+		var newInput = "<input type='text' id='new_title" +idx+ "' class='form-control' value='"+ title +"'/>";
+		
+		$("#t"+idx).html(newInput);
+		
+		var newButton="<button class='btn btn-primary btn-sm' onclick='goUpdate("+ idx +")'>저장</button>"; //버튼 바꿔주기
+		$("#update_btn"+idx).html(newButton);
+		
+	} 
+	//수정화면에서 저장버튼 눌렀을 때
+	   function goUpdate(idx){
+		var title= $("#new_title"+idx).val();
+		var content = $("#t_a"+idx).val();
+		   $.ajax({
+			url : "boardModify.do",
+			type : "post",
+			data :{ "idx" : idx, "title" : title, "content" : content},  // key : value   
+			success : loadList,
+			error : function(){alert("수정할 수 없습니다."); }
+		}); 
+	}    
 </script> 
 
       

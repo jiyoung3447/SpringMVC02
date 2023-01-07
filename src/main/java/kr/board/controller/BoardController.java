@@ -43,9 +43,31 @@ public class BoardController {
 		 특별하게 리턴할게 없으니 void로 바꿨음. */
 		 
 		 int res = board_dao.insert(vo);
-		 System.out.println("C_res : "+res);
+		 System.out.println("C새글등록_res : "+res);
 		 //return "redirect:myboardList.do";
-		 }
+	 }
+	 
+	 //게시글 삭제
+	 @RequestMapping("/boardDel.do")
+	// public String delete(int idx) {
+	 public @ResponseBody void delete(int idx) {
+		 int res = board_dao.delete(idx);
+		
+		 System.out.println("C삭제_res : "+res);
+		 
+		// return "redirect:myboardList.do";
+	 }
+	 
+	 //수정 업데이트 완료.  수정 후 vo임
+	 @RequestMapping("/boardModify.do")
+	// public String modifyOK(BoardVO vo){
+		 public @ResponseBody void modifyOK(BoardVO vo){
+		 
+		 int res = board_dao.update(vo);
+		 
+		 //return "redirect:myboardList.do";	 
+	 } 
+	 
 		 
 	/*@RequestMapping(value = { "/", "/myboardList.do" })
 	public String List(Model model) {
