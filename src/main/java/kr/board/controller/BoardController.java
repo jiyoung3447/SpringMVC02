@@ -28,7 +28,7 @@ public class BoardController {
 	}
 	
 	//@ResponseBody ->jackson-databind(객체를->JSON데이터 포맷으로 변환)
-	@RequestMapping("/myboardList.do")
+	 @RequestMapping("/myboardList.do")
 	public @ResponseBody List<BoardVO> boardList(){
 		
 		List<BoardVO> list = board_dao.selectList();
@@ -40,7 +40,7 @@ public class BoardController {
 	 @RequestMapping("/boardInsert.do")
 	 public @ResponseBody void boardInsert(BoardVO vo) { 
 		 /*여기에 @ResponseBody를 넣어주고 아래 return을 안써주면 제어권은 ajax의 success로 내려감
-		 특별하게 리턴할게 없으니 void로 바꿨음. */
+		 특별하게 리턴할게 없으니 void로 바꿨음.  */
 		 
 		 int res = board_dao.insert(vo);
 		 System.out.println("C새글등록_res : "+res);
@@ -67,6 +67,30 @@ public class BoardController {
 		 
 		 //return "redirect:myboardList.do";	 
 	 } 
+	 
+	//게시글 상세보기
+		 @RequestMapping("/view.do")
+		 public @ResponseBody BoardVO view( int idx) {
+			 
+			 BoardVO vo = board_dao.selectOne(idx);  //해당되는idx 의 모든 정보를 vo로 담는다.
+			//조회수 증가를 위한 업데이트 메서드
+			 board_dao.update_count(idx);
+			 return vo;
+		 }
+	 
+	 //게시글 상세보기 했을 때 조회수 증가처리
+	/* @RequestMapping("/boardCount.do")
+	 public @ResponseBody BoardVO count(int idx) {
+		
+		//조회수 증가를 위한 업데이트 메서드
+		// int res =board_dao.update_count(idx);
+		
+		 BoardVO vo =board_dao.update_count(idx);
+		  System.out.println("C조회수idx : "+ idx);
+		  
+		  return vo;
+		 
+	 }  */
 	 
 		 
 	/*@RequestMapping(value = { "/", "/myboardList.do" })

@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
- <script type="text/javascript">
+  <script type="text/javascript">
 	$(document).ready(function(){
 		loadList();
 	});
@@ -43,14 +43,14 @@
 			listHtml += "<td id='t"+ obj.idx +"'><a href='javascript:goContent("+ obj.idx +")'>"+ obj.title +"</a></td>";
 			listHtml += "<td>"+ obj.writer +"</td>";
 			listHtml += "<td>"+ obj.indate +"</td>";
-			listHtml += "<td>"+ obj.count +"</td>";
+			listHtml += "<td id='cnt"+obj.idx +"'>"+ obj.count +"</td>";
 			listHtml += "</tr>";
 			
 			//위에까진 전체리스트들. 아래는 각 리스트아래 공간만들어 주기
 			listHtml += "<tr id='c"+ obj.idx+"' style='display:none'>";
 			listHtml += "<td>내용</td>";
 			listHtml += "<td colspan='4'>";
-			listHtml += "<textarea id='t_a"+ obj.idx +"'readonly rows='7' class='form-control'>"+ obj.content +"</textarea>";
+			listHtml += "<textarea id='t_a"+ obj.idx +"'readonly rows='7' class='form-control'></textarea>";
 			listHtml += "<br/>";
 			listHtml += "<span id='update_btn"+ obj.idx +"'><button class='btn btn-success btn-sm' onclick='goUpdateForm("+ obj.idx +")'>수정</button></span>&nbsp";
 			listHtml += "<button class='btn btn-warning btn-sm' onclick='goDelete("+ obj.idx +")'>삭제</button>";
@@ -107,11 +107,33 @@
 		//$("#c"+idx).css("display", "block");  //block으로 해버리면 colsplan이 tr에걸려있기 때문에 안먹힘.
 		if($("#c"+idx).css("display")=="none"){  //상세보기가 펼쳐질때 아래 ajax로 보여지기
 			
+			$.ajax({
+				url : "view.do", //상세보기
+				type : "get",
+				data : {"idx" : idx},
+				dataType : "json",
+				success : function(data){
+					$("#t_a"+idx).val(data.content);
+				},
+				error : function(){alert("상세보기에러"); }
+				
+			});
+		
 			$("#c"+idx).css("display", "table-row"); //보이기
 			$("#t_a"+idx).attr("readonly",true); //수정하기 처음에만 readonly가 false여야 하므로 이부분 추가해주기
 			
 		}else{
 			$("#c"+idx).css("display", "none"); //감추기
+			 $.ajax({
+				url : "view.do",
+				type : "get",
+				data : {"idx" : idx},
+				dataType : "json",
+				success : function(data){
+					$("#cnt"+idx).text(data.count);
+				},
+				error : function(){alert("조회수 에러"); }
+			}); 
 		}
 	}
 	

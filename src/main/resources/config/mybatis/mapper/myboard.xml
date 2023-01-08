@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 
 	<!-- 게시글 상세보기 -->
-	<select id="board_one" resultType="board">
+	<select id="board_one" resultType="board" parameterType="int">
 		select * from myboard where idx = #{idx}
 	</select>
 	 
@@ -39,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>  
 	
 	<!-- 조회수 증가 -->
-	<update id="update_indate" parameterType="int">
+	<update id="update_count" parameterType="int">
 		 update myboard set count = count+1 where idx=#{idx} 
 		
 	</update>
